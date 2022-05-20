@@ -1,0 +1,38 @@
+<div
+  (touchstart)="onTouchStart($event)"
+  (touchend)="onTouchEnd($event)"
+  (touchmove)="$event.preventDefault()"
+  class="hideScroll">
+  <section
+    #i
+    *ngFor="let item of [1, 2, 3, 4, 5, 6]; let i = index"
+    class="section"
+    [ngClass]="[i % 2 === 0 ? 'left' : 'right']">
+    <div class="bg"></div>
+    <div
+      class="textWrapper"
+      [ngClass]="[i % 2 === 0 ? 'textWrapperL' : 'textWrapperR']">
+      <h1 class="text">hello world</h1>
+    </div>
+  </section>
+  <!--
+  <section #two class="horizontal">
+    <section *ngFor="let item of [1, 2, 3]" class="panel">
+      <div class="bg"></div>
+    </section>
+  </section>
+  <section #three class="last bg-primary"></section>
+</div> -->
+</div>
+<div class="nav">
+  <div class="nav-wrapper">
+    <div
+      *ngFor="let item of [1, 2, 3, 4, 5, 6]; let i = index"
+      class="pointer unselectable my-2"
+      (click)="scroll(keyArr[i]); activeSlide = i">
+      <div
+        class="dot"
+        [ngClass]="activeSlide === i ? 'active' : 'inactive'"></div>
+    </div>
+  </div>
+</div>
