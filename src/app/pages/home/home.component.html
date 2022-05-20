@@ -24,6 +24,7 @@
   <section #three class="last bg-primary"></section>
 </div> -->
 </div>
+
 <div class="nav">
   <div class="nav-wrapper">
     <div
@@ -36,3 +37,26 @@
     </div>
   </div>
 </div>
+
+<div class="top">
+  <div class="show-more pointer unselectable" (click)="clickHidden()">
+    <app-icons name="menu" [size]="26"></app-icons>
+  </div>
+</div>
+
+<div
+  [@visibilityChanged]="visiblityState$.value"
+  style="transform-origin: left"
+  class="sidebar justify-content-center d-flex">
+  <div class="sticky-filter pt-3 row">
+    <div class="select d-flex flex-column w-100">
+      <!--button for hiding search filter bar-->
+      hihi
+    </div>
+  </div>
+</div>
+<div
+  *ngIf="!filterHidden"
+  class="pad"
+  id="pad"
+  (click)="!filterHidden ? clickHidden() : undefined"></div>

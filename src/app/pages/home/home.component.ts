@@ -3,21 +3,74 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/all'
 import * as _ from 'lodash'
 import { round } from 'lodash'
+import { trigger, state, transition, style, animate } from '@angular/animations'
+import { Subscription, BehaviorSubject } from 'rxjs'
 
+import {
+  Breakpoint,
+  BreakpointsService,
+} from '@app/shared/services/breakpoints.service'
 @Component({
+  selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
+  animations: [
+    trigger('visibilityChanged', [
+      state(
+        'expand',
+        style({
+          opacity: 1,
+
+          transform: 'translateX(0)',
+        })
+      ),
+      state(
+        'none',
+        style({
+          opacity: 0,
+
+          overflow: 'hidden',
+          transform: `translateX(-25vw)`,
+        })
+      ),
+      transition('expand => none', animate('300ms')),
+      transition('none => expand', animate('300ms')),
+    ]),
+  ],
 })
 export class HomeComponent implements OnInit {
-  constructor() {}
+  breakpoints: Breakpoint
+  filterHidden: boolean = true
+  breakpointSubscription: Subscription
+  //for animation
+  visiblityState$ = new BehaviorSubject<string>('none')
+  // visiblityState$$ = new BehaviorSubject<string>('none')
+  backdropSub: Subscription
+  constructor(private breakpointsService: BreakpointsService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.breakpointSubscription =
+      this.breakpointsService.breakpointsSubject.subscribe(
+        (breakpoints: Breakpoint) => {
+          this.breakpoints = breakpoints
+          console.log(this.breakpoints)
+        }
+      )
+    this.subBackdrop()
+  }
 
   ngAfterViewInit(): void {
     gsap.registerPlugin(ScrollTrigger)
     this.parallax()
     // this.horizontal()
     console.log(this.keyArr)
+  }
+
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    if (this.backdropSub) this.backdropSub.unsubscribe()
+    if (this.breakpointSubscription) this.breakpointSubscription.unsubscribe()
   }
 
   keyArr: any = []
@@ -44,6 +97,29 @@ export class HomeComponent implements OnInit {
   //     },
   //   })
   // }
+  subBackdrop() {
+    this.backdropSub = this.visiblityState$.subscribe(state => {
+      // console.log(state)
+      if (state === 'expand') {
+        document.body.style.overflow = 'hidden'
+      } else {
+        document.body.style.overflow = 'auto'
+      }
+    })
+  }
+  clickHidden(goback?: boolean) {
+    if (
+      this.visiblityState$.value ===
+      'none' /*|| this.visiblityState$$.value === 'none'*/
+    ) {
+      this.visiblityState$.next('expand')
+      // this.visiblityState$$.next('expand')
+    } else {
+      this.visiblityState$.next('none')
+      // this.visiblityState$$.next('none')
+    }
+    this.filterHidden = !this.filterHidden
+  }
 
   parallax() {
     //Loop over all the sections and set animations
@@ -137,15 +213,18 @@ export class HomeComponent implements OnInit {
 
   onTouchEnd(event: any) {
     this.yAfter = event.changedTouches[0].clientY
-    this.debouncedOnScroll(this.yBefore - this.yAfter)
+    if (this.visiblityState$.value !== 'expand') {
+      this.debouncedOnScroll(this.yBefore - this.yAfter)
+    }
   }
 
   @HostListener('wheel', ['$event'])
   onScroll(event: any) {
-    console.log(event.type)
     if (event.type === 'wheel') {
       event.preventDefault()
-      this.debouncedOnScroll(event.deltaY)
+      if (this.visiblityState$.value !== 'expand') {
+        this.debouncedOnScroll(event.deltaY)
+      }
     }
   }
 }

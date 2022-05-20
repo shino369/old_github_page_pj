@@ -1,0 +1,13 @@
+<div
+  [ngStyle]="{
+    width: size + 'px',
+    height: size + 'px'
+  }"
+  class="icon-container">
+  <img
+    [src]="'assets/icons/' + name + '.svg'"
+    [ngClass]="['icon', color, disabled ? 'disabled' : '']"
+    [ngStyle]="{ opacity: opacity }"
+    [width]="size"
+    [height]="size" />
+</div>
