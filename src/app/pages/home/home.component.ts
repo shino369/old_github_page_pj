@@ -104,6 +104,8 @@ export class HomeComponent implements OnInit {
     }
     this.parallax()
     this.textEffect()
+    //scroll to top
+    window.scrollTo(0, 0)
     this.activeSlide = round(window.scrollY / window.innerHeight)
     // this.horizontal()
     // console.log(this.keyArr)

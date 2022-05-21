@@ -66,6 +66,8 @@ section {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  filter: brightness(0.7);
+  -webkit-filter: blur(0.7);
 }
 
 .pointer{
