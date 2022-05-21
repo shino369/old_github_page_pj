@@ -86,14 +86,9 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     if (
-      [
-        'iPad Simulator',
-        'iPhone Simulator',
-        'iPod Simulator',
-        'iPad',
-        'iPhone',
-        'iPod',
-      ].includes(navigator.platform) ||
+      ['iPad Simulator', 'iPhone Simulator', 'iPad', 'iPhone'].includes(
+        navigator.platform
+      ) ||
       (navigator.userAgent.includes('Mac') && 'ontouchend' in document)
     ) {
       this.disableFullpage = true
@@ -210,7 +205,7 @@ export class HomeComponent implements OnInit {
         },
       })
 
-      if (section.textWrapperL) {
+      if (section.textWrapperL && !this.disableFullpage) {
         gsap.to(section.textWrapperL, {
           x: window.innerWidth / 2 - section.textWrapperL.offsetWidth / 2,
           // x: () => window.innerWidth / 2 - section.textWrapperL.offsetWidth / 2,
@@ -225,7 +220,7 @@ export class HomeComponent implements OnInit {
         })
       }
 
-      if (section.textWrapperR) {
+      if (section.textWrapperR && !this.disableFullpage) {
         gsap.to(section.textWrapperR, {
           x: () =>
             -(window.innerWidth / 2 - section.textWrapperR.offsetWidth / 2),
@@ -402,7 +397,7 @@ export class HomeComponent implements OnInit {
   @HostListener('wheel', ['$event'])
   onScroll(event: any) {
     // console.log(event)
-    if (event.type === 'wheel') {
+    if (event.type === 'wheel' && !this.disableFullpage) {
       event.preventDefault()
       if (this.visiblityState$.value !== 'expand' && this.loading === 'false') {
         this.debouncedOnScroll(event.deltaY)
