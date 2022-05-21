@@ -1,20 +1,20 @@
 import { Component, HostListener, OnInit } from '@angular/core'
 import { gsap } from 'gsap'
-import { ScrollTrigger, TextPlugin } from 'gsap/all'
+import { ScrollTrigger } from 'gsap/all'
 import * as _ from 'lodash'
 import { round } from 'lodash'
 import { trigger, state, transition, style, animate } from '@angular/animations'
 import { Subscription, BehaviorSubject, fromEvent } from 'rxjs'
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators'
-
 import {
   Breakpoint,
   BreakpointsService,
 } from '@app/shared/services/breakpoints.service'
+
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
+  selector: 'app-parallax',
+  templateUrl: './parallax.component.html',
+  styleUrls: ['./parallax.component.scss'],
   animations: [
     trigger('visibilityChanged', [
       state(
@@ -37,26 +37,11 @@ import {
       transition('expand => none', animate('300ms')),
       transition('none => expand', animate('300ms')),
     ]),
-    trigger('loading', [
-      state(
-        'true',
-        style({
-          opacity: 1,
-        })
-      ),
-      state(
-        'false',
-        style({
-          opacity: 0,
-          display: 'none',
-        })
-      ),
-      transition('true => false', [animate('300ms')]),
-    ]),
   ],
 })
-export class HomeComponent implements OnInit {
-  loading: string = 'true'
+export class ParallaxComponent implements OnInit {
+  keyArr: any = []
+  activeSlide: number = 0
   breakpoints: Breakpoint
   filterHidden: boolean = true
   breakpointSubscription: Subscription
@@ -65,10 +50,8 @@ export class HomeComponent implements OnInit {
   scrollEvent = fromEvent(window, 'scroll')
     .pipe(debounceTime(50))
     .subscribe(() => {
-      if (this.loading === 'false') {
-        this.activeSlide = round(window.scrollY / window.innerHeight)
-        this.scroll(this.keyArr[this.activeSlide])
-      }
+      this.activeSlide = round(window.scrollY / window.innerHeight)
+      this.scroll(this.keyArr[this.activeSlide])
     })
 
   constructor(private breakpointsService: BreakpointsService) {}
@@ -83,22 +66,14 @@ export class HomeComponent implements OnInit {
       )
     this.subBackdrop()
   }
-
   ngAfterViewInit(): void {
-    //Called after every check of the component's view. Applies to components only.
-    //Add 'implements AfterViewChecked' to the class.
-    gsap.registerPlugin(ScrollTrigger, TextPlugin)
-    this.nameEffect()
-    this.parallax()
-    this.textEffect()
     // this.horizontal()
     // console.log(this.keyArr)
-    setTimeout(() => {
-      this.cursor.pause()
-      this.loading = 'false'
-    }, 10000)
-  }
 
+    gsap.registerPlugin(ScrollTrigger)
+    this.parallax()
+    this.textEffect()
+  }
   ngOnDestroy(): void {
     //Called once, before the instance is destroyed.
     //Add 'implements OnDestroy' to the class.
@@ -106,9 +81,6 @@ export class HomeComponent implements OnInit {
     if (this.breakpointSubscription) this.breakpointSubscription.unsubscribe()
     if (this.scrollEvent) this.scrollEvent.unsubscribe()
   }
-
-  keyArr: any = []
-  activeSlide: number = 0
 
   subBackdrop() {
     this.backdropSub = this.visiblityState$.subscribe(state => {
@@ -133,7 +105,6 @@ export class HomeComponent implements OnInit {
     }
     this.filterHidden = !this.filterHidden
   }
-
   parallax() {
     //Loop over all the sections and set animations
     gsap.utils.toArray('.section').forEach((section: any, i) => {
@@ -216,55 +187,6 @@ export class HomeComponent implements OnInit {
     })
   }
 
-  words = ['ANTHONY WONG.', 'A DEVELOPER.']
-  cursor: any
-  masterTl = gsap.timeline({ repeat: -1 }).pause()
-  boxTl = gsap.timeline()
-  nameEffect() {
-    this.cursor = gsap.to('.cursor', {
-      opacity: 0,
-      ease: 'power2.inOut',
-      repeat: -1,
-    })
-    this.boxTl
-      .to('.box', {
-        duration: 1,
-        width: '100%',
-        delay: 0,
-        ease: 'power4.inOut',
-      })
-      // .to('.hello', { duration: 1, y: '100px', ease: 'power3.out' })
-      .to('.box', {
-        duration: 1,
-        height: '100%',
-        // ease: 'elastic.out',
-        onComplete: () => {
-          this.masterTl.play()
-        },
-      })
-      .to('.box', {
-        duration: 1,
-        autoAlpha: 0.7,
-        yoyo: true,
-        repeat: -1,
-        ease: "rough({ template: none.out, strength:  1, points: 20, taper: 'none', randomize: true, clamp: false})",
-      })
-    this.words.forEach(word => {
-      let tl = gsap.timeline({ repeat: 1, yoyo: true, repeatDelay: 1 })
-      tl.to('.typing', {
-        duration: 1,
-        text: word,
-        onComplete: () => {
-          if (word === 'A DEVELOPER.') {
-            this.masterTl.pause()
-            this.boxTl.pause()
-          }
-        },
-      })
-      this.masterTl.add(tl)
-    })
-  }
-
   animateFrom(elem: any, _direction?: number) {
     const direction = _direction || 1
     var x = 0,
@@ -335,7 +257,7 @@ export class HomeComponent implements OnInit {
     // console.log(event)
     if (event.type === 'wheel') {
       event.preventDefault()
-      if (this.visiblityState$.value !== 'expand' && this.loading === 'false') {
+      if (this.visiblityState$.value !== 'expand') {
         this.debouncedOnScroll(event.deltaY)
       }
     }

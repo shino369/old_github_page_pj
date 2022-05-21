@@ -1,21 +1,4 @@
 <div
-  [@loading]="loading"
-  class="loading"
-  (touchmove)="$event.preventDefault()"
-  (scroll)="$event.preventDefault()">
-  <div class="d-flex w-100 h-100 justify-content-center align-items-center">
-    <div class="d-flex justify-content-start w-100 px-4" *ngIf="loading">
-      <!-- <div class="name">ANTHONY</div> -->
-      <div class="wrapper">
-        <span class="box"></span><span class="hello">Hello, I'm :</span>
-      </div>
-      <div class="wrapper" style="padding-left: 1rem; color: white">
-        <div><span class="typing"></span><span class="cursor">_</span></div>
-      </div>
-    </div>
-  </div>
-</div>
-<div
   (touchstart)="onTouchStart($event)"
   (touchend)="onTouchEnd($event)"
   (touchmove)="$event.preventDefault()"
@@ -32,8 +15,7 @@
       [ngClass]="[i % 2 === 0 ? 'textWrapperL' : 'textWrapperR']">
       <div>
         <div class="text">
-          <p class="gs_reveal">
-            Lorem ipsum dolor sit amet, vim in labitur ornatus, pri ponderum
+          <p class="gs_reveal">Lorem ipsum dolor sit amet, vim in labitur ornatus, pri ponderum
             oporteat mediocrem ut. Cum id velit iracundia scripserit, eos at
             vero dolor, vel viris prodesset ut. Ne sed quot habemus, has ei
             prima eleifend consulatu, no vix summo regione forensibus.
@@ -42,6 +24,14 @@
       </div>
     </div>
   </section>
+  <!--
+  <section #two class="horizontal">
+    <section *ngFor="let item of [1, 2, 3]" class="panel">
+      <div class="bg"></div>
+    </section>
+  </section>
+  <section #three class="last bg-primary"></section>
+</div> -->
 </div>
 
 <div class="nav">

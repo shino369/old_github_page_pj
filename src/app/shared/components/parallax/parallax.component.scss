@@ -1,39 +1,5 @@
-@import '../../../theme/custom.scss';
-@import '../../../theme/typology.scss';
-
-.name   {
-  @include typography (60px, 'semibold');
-}
-
-
-.wrapper {
-  position: relative;
-  font-family: Lato, sans-serif;
-  font-size: 6vw;
-  font-weight: bold;
-  // padding-left: 15vw;
-  overflow: hidden;
-}
-
-.wrapper .typing {
-  // font-family: 'Source Code Pro', sans-serif;
-  // font-weight: normal;
-  // padding-left: 1.2vw;
-}
-
-.hello {
-  transform: translateY(-100px);
-  color: black;
-}
-
-.wrapper .box {
-  position: absolute;
-  bottom: 0;
-  display: inline-block;
-  background: white;
-  height: 1vw;
-  z-index: -1;
-}
+@import '../../../../theme/custom.scss';
+@import '../../../../theme/typology.scss';
 
 .textWrapper {
   padding: 2rem;
@@ -185,14 +151,4 @@
 
 .text {
   @include typography(1.2rem, 'semibold');
-}
-
-.loading{
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  background-color: black;
-  z-index: 1051;
 }

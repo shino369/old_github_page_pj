@@ -10,6 +10,7 @@ import { MatCommonModule } from '@angular/material/core'
 import { MatSidenavModule } from '@angular/material/sidenav'
 import { MatToolbarModule } from '@angular/material/toolbar'
 import { MatIconModule } from '@angular/material/icon'
+import { ParallaxComponent } from './components/parallax/parallax.component'
 
 // components
 import { IconComponent } from './components/icon/icon.component'
@@ -25,7 +26,7 @@ const UIMODULES = [
 ]
 
 // remove never later
-const COMPONENTS = [IconComponent]
+const COMPONENTS = [IconComponent, ParallaxComponent]
 const DIRECTIVES: never[] = []
 const PIPES: never[] = []
 const DECLARE = [...COMPONENTS, ...DIRECTIVES, ...PIPES]
