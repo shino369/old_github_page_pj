@@ -99,14 +99,18 @@ export class HomeComponent implements OnInit {
     //Called after every check of the component's view. Applies to components only.
     //Add 'implements AfterViewChecked' to the class.
     gsap.registerPlugin(ScrollTrigger, TextPlugin)
-    this.nameEffect()
+    if (this.loading === 'true') {
+      this.nameEffect()
+    }
     this.parallax()
     this.textEffect()
+    this.activeSlide = round(window.scrollY / window.innerHeight)
     // this.horizontal()
     // console.log(this.keyArr)
     setTimeout(() => {
       this.cursor.pause()
       this.loading = 'false'
+      this.quoteEffect()
     }, 12000)
   }
 
@@ -225,6 +229,22 @@ export class HomeComponent implements OnInit {
         }, // assure that the element is hidden when scrolled into view
       })
     })
+  }
+
+  quoteEffect() {
+    const quote = gsap.timeline()
+
+    quote
+      .to('.quote-wrapper', {
+        transform: 'scaleX(1)',
+        duration: 1,
+        ease: 'power2.inOut',
+      })
+      .to('.quote', {
+        opacity: 1,
+        duration: 3,
+        ease: 'power2.inOut',
+      })
   }
 
   words = ['HELLO.', "I'M ANTHONY WONG.", 'A DEVELOPER.']

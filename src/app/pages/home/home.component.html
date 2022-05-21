@@ -29,6 +29,7 @@
     [ngClass]="[i % 2 === 0 ? 'left' : 'right']">
     <div class="bg"></div>
     <div
+      *ngIf="i > 0"
       class="textWrapper"
       [ngClass]="[i % 2 === 0 ? 'textWrapperL' : 'textWrapperR']">
       <div>
@@ -40,6 +41,17 @@
             prima eleifend consulatu, no vix summo regione forensibus.
           </p>
         </div>
+      </div>
+    </div>
+    <div
+      *ngIf="i === 0"
+      class="d-flex justify-content-center align-items-center w-100 quote-wrapper px-2">
+      <div class="quote">
+        <div class="big text-center pb-2 mb-2">IT'S NOT ABOUT IDEAS.</div>
+        <div
+          *ngIf="breakpoints['md-up']"
+          class="custom-border mb-4 w-100"></div>
+        <div class="small text-center">IT'S ABOUT MAKING IDEAS HAPPEN.</div>
       </div>
     </div>
   </section>
