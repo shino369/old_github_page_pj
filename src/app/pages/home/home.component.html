@@ -46,7 +46,11 @@
 
 <div
   [@visibilityChanged]="visiblityState$.value"
-  style="transform-origin: left"
+  [style]="
+    breakpoints['md-down']
+      ? 'transform-origin: top;   width: 100%;'
+      : 'transform-origin: left; max-width: 300px;  width: 25%;'
+  "
   class="sidebar justify-content-center d-flex">
   <div class="sticky-filter pt-3 row">
     <div class="select d-flex flex-column w-100">

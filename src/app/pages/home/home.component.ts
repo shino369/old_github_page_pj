@@ -4,7 +4,8 @@ import { ScrollTrigger } from 'gsap/all'
 import * as _ from 'lodash'
 import { round } from 'lodash'
 import { trigger, state, transition, style, animate } from '@angular/animations'
-import { Subscription, BehaviorSubject } from 'rxjs'
+import { Subscription, BehaviorSubject, fromEvent } from 'rxjs'
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators'
 
 import {
   Breakpoint,
@@ -42,10 +43,15 @@ export class HomeComponent implements OnInit {
   breakpoints: Breakpoint
   filterHidden: boolean = true
   breakpointSubscription: Subscription
-  //for animation
   visiblityState$ = new BehaviorSubject<string>('none')
-  // visiblityState$$ = new BehaviorSubject<string>('none')
   backdropSub: Subscription
+  scrollEvent = fromEvent(window, 'scroll')
+    .pipe(debounceTime(50))
+    .subscribe(() => {
+      this.activeSlide = round(window.scrollY / window.innerHeight)
+      this.scroll(this.keyArr[this.activeSlide])
+    })
+
   constructor(private breakpointsService: BreakpointsService) {}
 
   ngOnInit(): void {
@@ -220,6 +226,7 @@ export class HomeComponent implements OnInit {
 
   @HostListener('wheel', ['$event'])
   onScroll(event: any) {
+    // console.log(event)
     if (event.type === 'wheel') {
       event.preventDefault()
       if (this.visiblityState$.value !== 'expand') {
