@@ -19,7 +19,6 @@
     <div
       class="d-flex justify-content-start w-100 px-4"
       *ngIf="loading === 'true'">
-      <!-- <div class="name">ANTHONY</div> -->
       <div class="wrapper">
         <span class="box"></span><span class="hello">root@{{ OS }}: ~$</span
         ><span class="hello-abs">root@{{ OS }}: ~$</span>
@@ -113,7 +112,11 @@
     [ngClass]="[visiblityState$.value === 'expand' ? 'active' : 'inactive']"
     class="show-more pointer unselectable backdrop"
     (click)="clickHidden()">
-    <app-icons name="menu" [size]="26"></app-icons>
+    <img
+      [src]="'assets/icons/' + 'menu' + '.svg'"
+      style="mix-blend-mode: difference"
+      [width]="26"
+      [height]="26" />
   </div>
 </div>
 

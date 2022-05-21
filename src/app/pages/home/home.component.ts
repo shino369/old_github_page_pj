@@ -126,13 +126,13 @@ export class HomeComponent implements OnInit {
     this.parallax()
     this.textEffect()
     //scroll to top
-    window.scrollTo(0, 0)
     this.activeSlide = round(window.scrollY / window.innerHeight)
     // this.horizontal()
     // console.log(this.keyArr)
     setTimeout(() => {
       this.cursor.pause()
       this.loading = 'false'
+      window.scrollTo(0, 0)
       this.quoteEffect()
     }, 12000)
   }
@@ -205,7 +205,7 @@ export class HomeComponent implements OnInit {
         },
       })
 
-      if (section.textWrapperL && !this.disableFullpage) {
+      if (section.textWrapperL) {
         gsap.to(section.textWrapperL, {
           x: window.innerWidth / 2 - section.textWrapperL.offsetWidth / 2,
           // x: () => window.innerWidth / 2 - section.textWrapperL.offsetWidth / 2,
@@ -220,7 +220,7 @@ export class HomeComponent implements OnInit {
         })
       }
 
-      if (section.textWrapperR && !this.disableFullpage) {
+      if (section.textWrapperR) {
         gsap.to(section.textWrapperR, {
           x: () =>
             -(window.innerWidth / 2 - section.textWrapperR.offsetWidth / 2),
