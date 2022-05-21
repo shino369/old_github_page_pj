@@ -1,10 +1,24 @@
 <div
   [@loading]="loading"
   class="loading"
-  (touchmove)="$event.preventDefault()"
-  (scroll)="$event.preventDefault()">
+  (touchmove)="
+    disableFullpage
+      ? loading === 'true'
+        ? $event.preventDefault()
+        : undefined
+      : $event.preventDefault()
+  "
+  (scroll)="
+    disableFullpage
+      ? loading === 'true'
+        ? $event.preventDefault()
+        : undefined
+      : $event.preventDefault()
+  ">
   <div class="d-flex w-100 h-100 justify-content-center align-items-center">
-    <div class="d-flex justify-content-start w-100 px-4" *ngIf="loading">
+    <div
+      class="d-flex justify-content-start w-100 px-4"
+      *ngIf="loading === 'true'">
       <!-- <div class="name">ANTHONY</div> -->
       <div class="wrapper">
         <span class="box"></span><span class="hello">root@{{ OS }}: ~$</span
@@ -17,10 +31,34 @@
   </div>
 </div>
 <div
-  (touchstart)="onTouchStart($event)"
-  (touchend)="onTouchEnd($event)"
-  (touchmove)="$event.preventDefault()"
-  (scroll)="$event.preventDefault()"
+  (touchstart)="
+    disableFullpage
+      ? loading === 'true'
+        ? $event.preventDefault()
+        : undefined
+      : onTouchStart($event)
+  "
+  (touchend)="
+    disableFullpage
+      ? loading === 'true'
+        ? $event.preventDefault()
+        : undefined
+      : onTouchEnd($event)
+  "
+  (touchmove)="
+    disableFullpage
+      ? loading === 'true'
+        ? $event.preventDefault()
+        : undefined
+      : $event.preventDefault()
+  "
+  (scroll)="
+    disableFullpage
+      ? loading === 'true'
+        ? $event.preventDefault()
+        : undefined
+      : $event.preventDefault()
+  "
   class="hideScroll">
   <section
     #i

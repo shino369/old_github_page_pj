@@ -1,4 +1,9 @@
-import { Component, HostListener, OnInit } from '@angular/core'
+import {
+  ChangeDetectorRef,
+  Component,
+  HostListener,
+  OnInit,
+} from '@angular/core'
 import { gsap } from 'gsap'
 import { ScrollTrigger, TextPlugin } from 'gsap/all'
 import * as _ from 'lodash'
@@ -58,24 +63,19 @@ import {
 })
 export class HomeComponent implements OnInit {
   OS = window.navigator.platform
+  disableFullpage: boolean = false
   loading: string = 'true'
   breakpoints: Breakpoint
   filterHidden: boolean = true
   breakpointSubscription: Subscription
   visiblityState$ = new BehaviorSubject<string>('none')
   backdropSub: Subscription
-  scrollEvent = fromEvent(window, 'scroll')
-    .pipe(debounceTime(50))
-    .subscribe(() => {
-      if (this.loading === 'false') {
-        this.activeSlide = round(window.scrollY / window.innerHeight)
-        this.scroll(this.keyArr[this.activeSlide])
-      }
-    })
+  scrollEvent: Subscription
 
   constructor(
     private breakpointsService: BreakpointsService,
-    private metaService: Meta
+    private metaService: Meta,
+    private cdref: ChangeDetectorRef
   ) {
     this.metaService.addTag({
       property: 'og:image',
@@ -85,6 +85,21 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (
+      [
+        'iPad Simulator',
+        'iPhone Simulator',
+        'iPod Simulator',
+        'iPad',
+        'iPhone',
+        'iPod',
+      ].includes(navigator.platform) ||
+      (navigator.userAgent.includes('Mac') && 'ontouchend' in document)
+    ) {
+      this.disableFullpage = true
+      console.log('disable fullpage')
+    }
+
     this.breakpointSubscription =
       this.breakpointsService.breakpointsSubject.subscribe(
         (breakpoints: Breakpoint) => {
@@ -92,6 +107,17 @@ export class HomeComponent implements OnInit {
           console.log(this.breakpoints)
         }
       )
+
+    this.scrollEvent = fromEvent(window, 'scroll')
+      .pipe(debounceTime(50))
+      .subscribe(() => {
+        if (this.loading === 'false') {
+          this.activeSlide = round(window.scrollY / window.innerHeight)
+          if (!this.disableFullpage) {
+            this.scroll(this.keyArr[this.activeSlide])
+          }
+        }
+      })
     this.subBackdrop()
   }
 
@@ -114,6 +140,12 @@ export class HomeComponent implements OnInit {
       this.loading = 'false'
       this.quoteEffect()
     }, 12000)
+  }
+
+  ngAfterViewChecked(): void {
+    //Called after every check of the component's view. Applies to components only.
+    //Add 'implements AfterViewChecked' to the class.
+    this.cdref.detectChanges()
   }
 
   ngOnDestroy(): void {
