@@ -6,6 +6,7 @@ import { round } from 'lodash'
 import { trigger, state, transition, style, animate } from '@angular/animations'
 import { Subscription, BehaviorSubject, fromEvent } from 'rxjs'
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators'
+import { Title, Meta } from '@angular/platform-browser'
 
 import {
   Breakpoint,
@@ -72,7 +73,16 @@ export class HomeComponent implements OnInit {
       }
     })
 
-  constructor(private breakpointsService: BreakpointsService) {}
+  constructor(
+    private breakpointsService: BreakpointsService,
+    private metaService: Meta
+  ) {
+    this.metaService.addTag({
+      property: 'og:image',
+      content:
+        'https://i.pinimg.com/originals/c9/72/f0/c972f0909879d3ce4137c7140e26922c.jpg',
+    })
+  }
 
   ngOnInit(): void {
     this.breakpointSubscription =
