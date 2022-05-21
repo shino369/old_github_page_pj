@@ -2,6 +2,7 @@
   (touchstart)="onTouchStart($event)"
   (touchend)="onTouchEnd($event)"
   (touchmove)="$event.preventDefault()"
+  (scroll)="$event.preventDefault()"
   class="hideScroll">
   <section
     #i
@@ -39,7 +40,10 @@
 </div>
 
 <div class="top">
-  <div class="show-more pointer unselectable" (click)="clickHidden()">
+  <div
+    [ngClass]="[visiblityState$.value === 'expand' ? 'active' : 'inactive']"
+    class="show-more pointer unselectable backdrop"
+    (click)="clickHidden()">
     <app-icons name="menu" [size]="26"></app-icons>
   </div>
 </div>
@@ -49,13 +53,13 @@
   [style]="
     breakpoints['md-down']
       ? 'transform-origin: top;   width: 100%;'
-      : 'transform-origin: left; max-width: 300px;  width: 25%;'
+      : 'transform-origin: left; max-width: 300px; min-width: 300px;  width: 25%;'
   "
   class="sidebar justify-content-center d-flex">
-  <div class="sticky-filter pt-3 row">
+  <div class="sticky-filter row">
     <div class="select d-flex flex-column w-100">
       <!--button for hiding search filter bar-->
-      hihi
+      <div class="header">ANTHONY WONG</div>
     </div>
   </div>
 </div>

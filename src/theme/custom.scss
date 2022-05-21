@@ -1,5 +1,4 @@
 // global style
-
 @import './color.scss';
 
 // 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
@@ -19,6 +18,7 @@ $body-bg: $app-primary;
 // 3. Include remainder of required Bootstrap stylesheets
 @import '~bootstrap/scss/variables';
 @import '~bootstrap/scss/mixins';
+@import './typology.scss';
 html,
 body {
     margin: 0 !important;
@@ -29,6 +29,7 @@ body {
     &::-webkit-scrollbar {
       display: none;
     }
+    font-family: 'ivymode',  Arial, Helvetica, sans-serif;
 }
 
 section {

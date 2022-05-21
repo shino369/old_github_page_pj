@@ -31,7 +31,7 @@ import {
           opacity: 0,
 
           overflow: 'hidden',
-          transform: `translateX(-25vw)`,
+          transform: `translateX(-768px)`,
         })
       ),
       transition('expand => none', animate('300ms')),
@@ -77,6 +77,7 @@ export class HomeComponent implements OnInit {
     //Add 'implements OnDestroy' to the class.
     if (this.backdropSub) this.backdropSub.unsubscribe()
     if (this.breakpointSubscription) this.breakpointSubscription.unsubscribe()
+    if (this.scrollEvent) this.scrollEvent.unsubscribe()
   }
 
   keyArr: any = []
