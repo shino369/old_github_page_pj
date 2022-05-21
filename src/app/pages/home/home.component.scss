@@ -1,5 +1,4 @@
 @import '../../../theme/custom.scss';
-@import '../../../theme/typology.scss';
 
 .name   {
   @include typography (60px, 'semibold');
@@ -9,7 +8,7 @@
 .wrapper {
   position: relative;
   font-family: Lato, sans-serif;
-  font-size: 6vw;
+  font-size: 4vw;
   font-weight: bold;
   // padding-left: 15vw;
   overflow: hidden;
@@ -21,9 +20,16 @@
   // padding-left: 1.2vw;
 }
 
-.hello {
-  transform: translateY(-100px);
+.wrapper .hello {
   color: black;
+  opacity: 0;
+}
+
+.wrapper .hello-abs{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  transform: translateY(100px);
 }
 
 .wrapper .box {
@@ -31,7 +37,7 @@
   bottom: 0;
   display: inline-block;
   background: white;
-  height: 1vw;
+  height: 0.5vw;
   z-index: -1;
 }
 

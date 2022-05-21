@@ -56,6 +56,7 @@ import {
   ],
 })
 export class HomeComponent implements OnInit {
+  OS = window.navigator.platform
   loading: string = 'true'
   breakpoints: Breakpoint
   filterHidden: boolean = true
@@ -96,7 +97,7 @@ export class HomeComponent implements OnInit {
     setTimeout(() => {
       this.cursor.pause()
       this.loading = 'false'
-    }, 10000)
+    }, 12000)
   }
 
   ngOnDestroy(): void {
@@ -216,7 +217,7 @@ export class HomeComponent implements OnInit {
     })
   }
 
-  words = ['ANTHONY WONG.', 'A DEVELOPER.']
+  words = ['HELLO.', "I'M ANTHONY WONG.", 'A DEVELOPER.']
   cursor: any
   masterTl = gsap.timeline({ repeat: -1 }).pause()
   boxTl = gsap.timeline()
@@ -233,7 +234,11 @@ export class HomeComponent implements OnInit {
         delay: 0,
         ease: 'power4.inOut',
       })
-      // .to('.hello', { duration: 1, y: '100px', ease: 'power3.out' })
+      .to('.hello-abs', {
+        duration: 0.5,
+        y: 0,
+        ease: 'power3.out',
+      })
       .to('.box', {
         duration: 1,
         height: '100%',
