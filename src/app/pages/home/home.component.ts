@@ -151,7 +151,7 @@ export class HomeComponent implements OnInit {
       (navigator.userAgent.includes('Mac') && 'ontouchend' in document)
     ) {
       this.disableFullpage = true
-      console.log('disable fullpage')
+      // console.log('disabled fullpage')
     }
 
     this.breakpointSubscription =
@@ -240,6 +240,7 @@ export class HomeComponent implements OnInit {
 
   parallax(reset?: boolean) {
     if (reset) {
+      console.log('reset')
       for (let key in this.parallaxMap) {
         this.parallaxMap[key].kill()
       }
@@ -473,7 +474,7 @@ export class HomeComponent implements OnInit {
 
   private debouncedOnScroll = _.debounce(
     (deltaY: number) => {
-      console.log(deltaY)
+      // console.log(deltaY)
       const offset = round(window.scrollY / window.innerHeight)
       if (deltaY >= 20) {
         this.activeSlide =
