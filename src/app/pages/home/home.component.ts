@@ -168,9 +168,9 @@ export class HomeComponent implements OnInit {
       .subscribe(() => {
         if (this.loading === 'false') {
           this.activeSlide = round(window.scrollY / window.innerHeight)
-          if (!this.disableFullpage) {
-            this.scroll(this.keyArr[this.activeSlide])
-          }
+          // if (!this.disableFullpage) {
+          //   this.scroll(this.keyArr[this.activeSlide])
+          // }
         }
       })
     this.subBackdrop()
@@ -279,7 +279,8 @@ export class HomeComponent implements OnInit {
 
       if (section.textWrapperL) {
         this.parallaxMap[`textL${i}`] = gsap.to(section.textWrapperL, {
-          x: () => window.innerWidth / 2 - section.textWrapperL.offsetWidth / 2,
+          // x: () => window.innerWidth / 2 - section.textWrapperL.offsetWidth / 2,
+          alignSelf: 'center',
           duration: 3,
           ease: 'none',
           scrollTrigger: {
@@ -293,8 +294,9 @@ export class HomeComponent implements OnInit {
 
       if (section.textWrapperR) {
         this.parallaxMap[`textR${i}`] = gsap.to(section.textWrapperR, {
-          x: () =>
-            -(window.innerWidth / 2 - section.textWrapperR.offsetWidth / 2),
+          // x: () =>
+          //   -(window.innerWidth / 2 - section.textWrapperR.offsetWidth / 2),
+          alignSelf: 'center',
           duration: 3,
           // rotation: 360,
           ease: 'none',
@@ -309,36 +311,36 @@ export class HomeComponent implements OnInit {
         })
       }
 
-      if (section.sectionTitleL) {
-        // console.log(section.sectionTitleR)
-        this.parallaxMap[`titleL${i}`] = gsap.to(section.sectionTitleL, {
-          x: () =>
-            -(window.innerWidth * 0.75 - section.sectionTitleL.offsetWidth),
-          duration: 3,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: section.sectionTitleL,
-            start: 'center bottom',
-            end: 'center 60%',
-            scrub: 1,
-            // markers: true,
-          },
-        })
-      }
+      // if (section.sectionTitleL) {
+      //   // console.log(section.sectionTitleR)
+      //   this.parallaxMap[`titleL${i}`] = gsap.to(section.sectionTitleL, {
+      //     x: () =>
+      //       -(window.innerWidth * 0.75 - section.sectionTitleL.offsetWidth),
+      //     duration: 3,
+      //     ease: 'none',
+      //     scrollTrigger: {
+      //       trigger: section.sectionTitleL,
+      //       start: 'center bottom',
+      //       end: 'center 60%',
+      //       scrub: 1,
+      //       // markers: true,
+      //     },
+      //   })
+      // }
 
-      if (section.sectionTitleR) {
-        this.parallaxMap[`titleR${i}`] = gsap.to(section.sectionTitleR, {
-          x: () => window.innerWidth * 0.75 - section.sectionTitleR.offsetWidth,
-          duration: 3,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: section.sectionTitleR,
-            start: 'center bottom',
-            end: 'center 60%',
-            scrub: 1,
-          },
-        })
-      }
+      // if (section.sectionTitleR) {
+      //   this.parallaxMap[`titleR${i}`] = gsap.to(section.sectionTitleR, {
+      //     x: () => window.innerWidth * 0.75 - section.sectionTitleR.offsetWidth,
+      //     duration: 3,
+      //     ease: 'none',
+      //     scrollTrigger: {
+      //       trigger: section.sectionTitleR,
+      //       start: 'center bottom',
+      //       end: 'center 60%',
+      //       scrub: 1,
+      //     },
+      //   })
+      // }
     })
     // console.log(this.parallaxMap)
   }
