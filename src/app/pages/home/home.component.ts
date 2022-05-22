@@ -101,7 +101,7 @@ export class HomeComponent implements OnInit {
     {
       title: 'Skills',
       description:
-        'PROGRAMMING LANGUAGES:\nTypescripts, Javascript(ES6), Java, C++, MATLAB\n---------------------\nFRAMEWORKS/LIBRARIES:\nAngular 2+, React Native(functional), GSAP, RxJS, Bootstrap 4.5+, J2EE(Servlet), Spring Boot, Mybatis Plus\n---------------------\nDATABASES:\nPostgreSQL, Microsoft SQL Server\n---------------------\nLANGUAGES:\nChinese - Cantonese, Chinese - Mandarin, English, Japanese',
+        'PROGRAMMING LANGUAGES:\nTypescript, Javascript(ES6), Java, C++, MATLAB\n---------------------\nFRAMEWORKS/LIBRARIES:\nAngular 2+, React Native(functional), GSAP, RxJS, Bootstrap 4.5+, J2EE(Servlet), Spring Boot, Mybatis Plus\n---------------------\nDATABASES:\nPostgreSQL, Microsoft SQL Server\n---------------------\nLANGUAGES:\nChinese - Cantonese, Chinese - Mandarin, English, Japanese',
     },
     {
       title: 'Projects Participated',
@@ -211,7 +211,7 @@ export class HomeComponent implements OnInit {
     document.body.style.overflow = 'auto'
     setTimeout(() => {
       this.loading = 'false'
-      window.scrollTo(0, 0)
+      // window.scrollTo(0, 0)
       this.activeSlide = round(window.scrollY / window.innerHeight)
       this.quoteEffect()
     }, 200)

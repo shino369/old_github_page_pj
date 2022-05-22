@@ -12,7 +12,13 @@ const routes: Routes = [
 ]
 
 @NgModule({
-  imports: [CommonModule, RouterModule.forRoot(routes)],
+  imports: [
+    CommonModule,
+    RouterModule.forRoot(routes, {
+      relativeLinkResolution: 'legacy',
+      scrollPositionRestoration: 'disabled',
+    }),
+  ],
   exports: [RouterModule],
   declarations: [],
 })
