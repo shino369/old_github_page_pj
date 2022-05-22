@@ -76,16 +76,55 @@
         class="sectionText"
         [ngClass]="[i % 2 === 0 ? 'sectionTitleL' : 'sectionTitleR']">
         {{ slide.title }}
+        <img *ngIf="slide.img" class="img" [src]="slide.img" />
+        <img *ngIf="slide.img" class="imgClip" [src]="'https://cdn.picpng.com/paperclip/paperclip-paper-clip-office-clip-98456.png'" />
       </div>
     </div>
     <div
-      *ngIf="i > 0"
+      *ngIf="i !== 0 && i !== slides.length - 1"
       class="textWrapper"
       [ngClass]="[i % 2 === 0 ? 'textWrapperL' : 'textWrapperR']">
       <div>
         <div class="text">
-          <p class="gs_reveal">{{slide.description ||'Lorem ipsum dolor sit amet, vim in labitur ornatus, pri ponderum oporteat mediocrem ut. Cum id velit iracundia scripserit, eos at vero dolor, vel viris prodesset ut. Ne sed quot habemus, has ei prima eleifend consulatu, no vix summo regione forensibus.'}}
-          </p>
+          <p class="gs_reveal">{{slide.description}}</p>
+        </div>
+      </div>
+    </div>
+    <div
+      *ngIf="i === slides.length - 1"
+      class="textWrapper"
+      [ngClass]="[i % 2 === 0 ? 'textWrapperL' : 'textWrapperR']">
+      <div>
+        <div class="text">
+          <div class="gs_reveal">
+            <div class="d-flex pointer mb-4" (click)="goTo(slide.email![1])">
+              <app-icon
+                class="me-2"
+                [name]="'email'"
+                type="png"
+                height="26"
+                width="26"></app-icon>
+              <div class="mb-2">{{ slide.email![0] }}</div>
+            </div>
+            <div class="d-flex pointer mb-4" (click)="goTo(slide.whatsapp![1])">
+              <app-icon
+                class="me-2"
+                [name]="'whatsapp'"
+                type="png"
+                height="26"
+                width="26"></app-icon>
+              <div class="mb-2">{{ slide.whatsapp![0] }}</div>
+            </div>
+            <div class="d-flex pointer mb-4" (click)="goTo(slide.linkedin![1])">
+              <app-icon
+                class="me-2"
+                [name]="'linkedin'"
+                type="png"
+                height="26"
+                width="26"></app-icon>
+              <div class="mb-2">{{ slide.linkedin![0] }}</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -95,20 +134,14 @@
       <div class="quote">
         <div
           [ngClass]="breakpoints['md-up'] ? 'text-center' : 'text-left'"
-          class="big pb-2 mb-2 text-capitalize">
-          We're no strangers to love
+          class="big pb-2 mb-2 text-capitalize">We're no strangers to love
         </div>
         <div
           *ngIf="breakpoints['md-up']"
           class="custom-border mb-4 w-100"></div>
         <div
           [ngClass]="breakpoints['md-up'] ? 'text-center' : 'text-left'"
-          class="small text-capitalize">
-          {{
-            breakpoints['md-up']
-              ? 'You know the rules and so do I'
-              : 'You know the rules\nand so do I'
-          }}
+          class="small">{{breakpoints['md-up'] ? 'You know the rules and so do I' : 'You know the rules\nand so do I'}}
         </div>
       </div>
     </div>
@@ -163,7 +196,7 @@
       </div>
     </div>
   </div>
-  <div>Due performance and capability issues, full page scrolling is disabled in IOS devices (Ipad/Iphone).</div>
+  <div class="pb-4">Due performance and capability issues, full page scrolling is disabled in IOS devices (Ipad/Iphone).</div>
 </div>
 <div
   *ngIf="!filterHidden"

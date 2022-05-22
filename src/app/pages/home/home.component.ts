@@ -89,9 +89,9 @@ export class HomeComponent implements OnInit {
     {},
     {
       title: 'About Me',
-      img: '/assets/images/about.jpg',
+      img: 'https://pbs.twimg.com/media/EQh9aLXUcAAUc_G.jpg',
       description:
-        'Graduated from the City University of Hong Kong with a BEng in Information Engineering.\n\nEnthusiastic about learning new techs.\n\nA quick learner. Learn whatever is needed.\n\nExperienced in both frontend and backend development (well, excepts devops.)\n\nJLPT N1 certified.',
+        '\n\nAnthony Wong\n\nGraduated from the City University of Hong Kong with a BEng in Information Engineering.\n\nEnthusiastic about learning new techs.\n\nA quick learner. Learn whatever is needed.\n\nExperienced in both frontend and backend development (well, excepts devops.)\n\nJLPT N1 certified.',
     },
     {
       title: 'Work Experience',
@@ -105,16 +105,18 @@ export class HomeComponent implements OnInit {
     },
     {
       title: 'Projects Participated',
-      img: [
-        '3Tech OwlEye System (Front + Backend)',
-        'The Hong Kong Club Online Library System (Front)',
-        'Jockey Club All Brillants Carers Project (APP)',
-        'JDCLab (APP)',
-      ],
       description:
         '3Tech OwlEye System (Front + Backend)\n\nThe Hong Kong Club Online Library System (Front)\n\nJockey Club All Brillants Carers Project (RN APP)\n\nJDCLab (RN APP)',
     },
-    {},
+    {
+      title: 'Contact Me',
+      email: ['anthonywong3939@gmail.com', 'mailto:anthonywong3939@gmail.com'],
+      whatsapp: ['(+852)52362806', 'https://wa.me/85252362806'],
+      linkedin: [
+        'https://www.linkedin.com/in/aw3939',
+        'https://www.linkedin.com/in/aw3939',
+      ],
+    },
   ]
   // slides
   keyArr: any = []
@@ -166,9 +168,9 @@ export class HomeComponent implements OnInit {
       .subscribe(() => {
         if (this.loading === 'false') {
           this.activeSlide = round(window.scrollY / window.innerHeight)
-          if (!this.disableFullpage) {
-            this.scroll(this.keyArr[this.activeSlide])
-          }
+          // if (!this.disableFullpage) {
+          //   this.scroll(this.keyArr[this.activeSlide])
+          // }
         }
       })
     this.subBackdrop()

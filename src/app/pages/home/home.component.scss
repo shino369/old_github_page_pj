@@ -1,6 +1,21 @@
 @import '../../../theme/custom.scss';
 
 @media screen and (max-width: 768px) {
+  .img {
+    width: 60px;
+    height: 60px;
+    top: 2rem;
+    right: 2rem;
+  }
+  .imgClip{
+    position: absolute;
+    top: 15px;
+    right: 13px;
+    transform: rotate(45deg);
+    width: 30px;
+    height: 40px;
+    z-index: 51;
+  }
   .skip {
     @include typography(20px, 'regular');
   }
@@ -48,6 +63,21 @@
 }
 
 @media screen and (min-width: 768px) {
+  .img {
+    width: 200px;
+    height: 200px;
+    top: 4rem;
+    right: 2rem;
+  }
+  .imgClip{
+    position: absolute;
+    top: 38px;
+    right: 10px;
+    transform: rotate(45deg);
+    width: 60px;
+    height: 80px;
+    z-index: 51;
+  }
   .skip {
     @include typography(40px, 'regular');
   }
@@ -122,6 +152,8 @@ a {
   text-shadow: none;
   opacity: 0.8;
   background-color: rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 50;
 }
 .name {
   @include typography(60px, 'semibold');
@@ -182,6 +214,12 @@ a {
   height: 70vh;
   width: 75vw;
   overflow: hidden;
+}
+
+.img{
+  position: absolute;
+  z-index: 50;
+  transform: rotate(15deg);
 }
 
 .textWrapperL {
