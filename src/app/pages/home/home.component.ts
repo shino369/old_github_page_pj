@@ -91,7 +91,7 @@ export class HomeComponent implements OnInit {
       title: 'About Me',
       img: 'https://pbs.twimg.com/media/EQh9aLXUcAAUc_G.jpg',
       description:
-        '\n\nAnthony Wong\n\nGraduated from the City University of Hong Kong with a BEng in Information Engineering.\n\nEnthusiastic about learning new techs.\n\nA quick learner. Learn whatever is needed.\n\nExperienced in both frontend and backend development (well, excepts devops.)\n\nJLPT N1 certified.',
+        '\n\nAnthony Wong\n\nGraduated from City University of Hong Kong with a BEng in Information Engineering.\n\nEnthusiastic about learning new techs.\n\nA quick learner. Learn whatever is needed.\n\nExperienced in both frontend and backend development (well, excepts devops.)\n\nJLPT N1 certified.',
     },
     {
       title: 'Work Experience',
@@ -101,7 +101,7 @@ export class HomeComponent implements OnInit {
     {
       title: 'Skills',
       description:
-        'PROGRAMMING LANGUAGES:\nTypescripts, Javascript(ES6), Java, C++, MATLAB\n---------------------\nFRAMEWORKS/LIBRARIES:\nAngular 2+, React Native(function), GSAP, RxJS, Bootstrap 4.5+, J2EE(Servlet), Spring Boot, Mybatis Plus\n---------------------\nDATABASES:\nPostgreSQL, Microsoft SQL Server\n---------------------\nLANGUAGES:\nChinese - Cantonese, Chinese - Mandarin, English, Japanese',
+        'PROGRAMMING LANGUAGES:\nTypescripts, Javascript(ES6), Java, C++, MATLAB\n---------------------\nFRAMEWORKS/LIBRARIES:\nAngular 2+, React Native(functional), GSAP, RxJS, Bootstrap 4.5+, J2EE(Servlet), Spring Boot, Mybatis Plus\n---------------------\nDATABASES:\nPostgreSQL, Microsoft SQL Server\n---------------------\nLANGUAGES:\nChinese - Cantonese, Chinese - Mandarin, English, Japanese',
     },
     {
       title: 'Projects Participated',
@@ -159,7 +159,7 @@ export class HomeComponent implements OnInit {
         (breakpoints: Breakpoint) => {
           this.breakpoints = breakpoints
           // console.log(this.breakpoints)
-          // this.parallax(true)
+          this.parallax(true)
         }
       )
 
@@ -168,15 +168,16 @@ export class HomeComponent implements OnInit {
       .subscribe(() => {
         if (this.loading === 'false') {
           this.activeSlide = round(window.scrollY / window.innerHeight)
-          // if (!this.disableFullpage) {
-          //   this.scroll(this.keyArr[this.activeSlide])
-          // }
+          if (!this.disableFullpage) {
+            this.scroll(this.keyArr[this.activeSlide])
+          }
         }
       })
     this.subBackdrop()
   }
 
   ngAfterViewInit(): void {
+    document.body.style.overflow = 'hidden'
     gsap.registerPlugin(ScrollTrigger, TextPlugin)
     if (this.loading === 'true') {
       this.nameEffect()
@@ -207,6 +208,7 @@ export class HomeComponent implements OnInit {
     this.masterTl.kill()
     this.boxTl.kill()
     this.cursor?.kill()
+    document.body.style.overflow = 'auto'
     setTimeout(() => {
       this.loading = 'false'
       window.scrollTo(0, 0)
@@ -237,7 +239,6 @@ export class HomeComponent implements OnInit {
   parallaxMap: any = {}
 
   parallax(reset?: boolean) {
-    this.keyArr = []
     if (reset) {
       for (let key in this.parallaxMap) {
         this.parallaxMap[key].kill()
@@ -247,22 +248,25 @@ export class HomeComponent implements OnInit {
     gsap.utils.toArray('.section').forEach((section: any, i) => {
       // Set the bg variable for the section
 
-      this.keyArr.push(section)
-      section.bg = section.querySelector('.bg')
-      section.textWrapperL = section.querySelector('.textWrapperL')
-      section.textWrapperR = section.querySelector('.textWrapperR')
-      section.sectionTitleL = section.querySelector('.sectionTitleL')
-      section.sectionTitleR = section.querySelector('.sectionTitleR')
+      if (!reset) {
+        this.keyArr.push(section)
 
-      // Give the backgrounds some random images
-      section.bg.style.backgroundImage = `url(https://picsum.photos/${1280}/${720}?random=${i}&blur=${3})`
+        section.bg = section.querySelector('.bg')
+        section.textWrapperL = section.querySelector('.textWrapperL')
+        section.textWrapperR = section.querySelector('.textWrapperR')
+        section.sectionTitleL = section.querySelector('.sectionTitleL')
+        section.sectionTitleR = section.querySelector('.sectionTitleR')
+
+        // Give the backgrounds some random images
+        section.bg.style.backgroundImage = `url(https://picsum.photos/${1280}/${720}?random=${i}&blur=${3})`
+      }
 
       // Set the initial position for the background
-      section.bg.style.backgroundPosition = `50% ${-innerHeight / 2}px`
+      section.bg.style.backgroundPosition = `50% ${-window.innerHeight / 2}px`
 
       // Do the parallax effect on each section
       this.parallaxMap[`bg${i}`] = gsap.to(section.bg, {
-        backgroundPosition: `50% ${innerHeight / 2}px`,
+        backgroundPosition: `50% ${window.innerHeight / 2}px`,
         ease: 'none', // Don't apply any easing function.
         scrollTrigger: {
           // Trigger the animation as soon as the section comes into view
@@ -418,6 +422,7 @@ export class HomeComponent implements OnInit {
             this.masterTl.kill()
             this.boxTl.kill()
             setTimeout(() => {
+              document.body.style.overflow = 'auto'
               this.cursor?.kill()
               this.loading = 'false'
               window.scrollTo(0, 0)
@@ -468,12 +473,16 @@ export class HomeComponent implements OnInit {
 
   private debouncedOnScroll = _.debounce(
     (deltaY: number) => {
+      console.log(deltaY)
       const offset = round(window.scrollY / window.innerHeight)
-      if (deltaY >= 0) {
+      if (deltaY >= 20) {
         this.activeSlide =
           this.keyArr.length - 1 === offset ? offset : offset + 1
-      } else {
+      } else if (deltaY < -20) {
         this.activeSlide = offset === 0 ? offset : offset - 1
+      } else {
+        this.activeSlide =
+          this.keyArr.length - 1 === offset ? offset : offset + 1
       }
       this.scroll(this.keyArr[this.activeSlide])
     },
@@ -491,8 +500,12 @@ export class HomeComponent implements OnInit {
 
   onTouchEnd(event: any) {
     this.yAfter = event.changedTouches[0].clientY
+    let offset = this.yBefore - this.yAfter
+    if (this.yBefore - this.yAfter < 20 && this.yBefore - this.yAfter > -20) {
+      this.yBefore < window.innerHeight / 2 ? (offset = -21) : (offset = 21)
+    }
     if (this.visiblityState$.value !== 'expand') {
-      this.debouncedOnScroll(this.yBefore - this.yAfter)
+      this.debouncedOnScroll(offset)
     }
   }
 

@@ -1,13 +1,6 @@
 <div
   [@loading]="loading"
   class="loading"
-  (touchmove)="
-    disableFullpage
-      ? loading === 'true'
-        ? $event.preventDefault()
-        : undefined
-      : $event.preventDefault()
-  "
   (scroll)="
     disableFullpage
       ? loading === 'true'
@@ -31,27 +24,8 @@
   </div>
 </div>
 <div
-  (touchstart)="
-    disableFullpage
-      ? loading === 'true'
-        ? $event.preventDefault()
-        : undefined
-      : onTouchStart($event)
-  "
-  (touchend)="
-    disableFullpage
-      ? loading === 'true'
-        ? $event.preventDefault()
-        : undefined
-      : onTouchEnd($event)
-  "
-  (touchmove)="
-    disableFullpage
-      ? loading === 'true'
-        ? $event.preventDefault()
-        : undefined
-      : $event.preventDefault()
-  "
+  (touchstart)="disableFullpage ? undefined : onTouchStart($event)"
+  (touchend)="disableFullpage ? undefined : onTouchEnd($event)"
   (scroll)="
     disableFullpage
       ? loading === 'true'
@@ -122,7 +96,7 @@
                 type="png"
                 height="26"
                 width="26"></app-icon>
-              <div class="mb-2">{{ slide.linkedin![0] }}</div>
+              <div class="mb-2">{{ 'Linkedin' }}</div>
             </div>
           </div>
         </div>
@@ -196,7 +170,7 @@
       </div>
     </div>
   </div>
-  <div class="pb-4">Due performance and capability issues, full page scrolling is disabled in IOS devices (Ipad/Iphone).</div>
+  <div class="pb-4">Due performance and capability issues, full page scrolling is disabled on portable devices (tablet/phone).</div>
 </div>
 <div
   *ngIf="!filterHidden"
