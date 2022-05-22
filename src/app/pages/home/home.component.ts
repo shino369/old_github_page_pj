@@ -84,6 +84,38 @@ export class HomeComponent implements OnInit {
     { name: 'Email', url: 'mailto:anthonywong3939@gmail.com' },
   ]
 
+  // slides data
+  slides = [
+    {},
+    {
+      title: 'About Me',
+      img: '/assets/images/about.jpg',
+      description:
+        'Graduated from the City University of Hong Kong with a BEng in Information Engineering.\n\nEnthusiastic about learning new techs.\n\nA quick learner. Learn whatever is needed.\n\nExperienced in both frontend and backend development (well, excepts devops.)\n\nJLPT N1 certified.',
+    },
+    {
+      title: 'Work Experience',
+      description:
+        'DEVELOPER\nAppicIDEA IT Solutions Limited\nSep 2021 - Present\nWeb application and app development\n---------------------\nASSOCIATE SOFTWARE ENGINEER\nThales\nJul 2021 - Sep 2021\nRCS Software Team. Software development, QA Testing',
+    },
+    {
+      title: 'Skills',
+      description:
+        'PROGRAMMING LANGUAGES:\nTypescripts, Javascript(ES6), Java, C++, MATLAB\n---------------------\nFRAMEWORKS/LIBRARIES:\nAngular 2+, React Native(function), GSAP, RxJS, Bootstrap 4.5+, J2EE(Servlet), Spring Boot, Mybatis Plus\n---------------------\nDATABASES:\nPostgreSQL, Microsoft SQL Server\n---------------------\nLANGUAGES:\nChinese - Cantonese, Chinese - Mandarin, English, Japanese',
+    },
+    {
+      title: 'Projects Participated',
+      img: [
+        '3Tech OwlEye System (Front + Backend)',
+        'The Hong Kong Club Online Library System (Front)',
+        'Jockey Club All Brillants Carers Project (APP)',
+        'JDCLab (APP)',
+      ],
+      description:
+        '3Tech OwlEye System (Front + Backend)\n\nThe Hong Kong Club Online Library System (Front)\n\nJockey Club All Brillants Carers Project (RN APP)\n\nJDCLab (RN APP)',
+    },
+    {},
+  ]
   // slides
   keyArr: any = []
   activeSlide: number = 0
@@ -124,7 +156,7 @@ export class HomeComponent implements OnInit {
       this.breakpointsService.breakpointsSubject.subscribe(
         (breakpoints: Breakpoint) => {
           this.breakpoints = breakpoints
-          console.log(this.breakpoints)
+          // console.log(this.breakpoints)
           // this.parallax(true)
         }
       )
@@ -167,6 +199,18 @@ export class HomeComponent implements OnInit {
     if (this.backdropSub) this.backdropSub.unsubscribe()
     if (this.breakpointSubscription) this.breakpointSubscription.unsubscribe()
     if (this.scrollEvent) this.scrollEvent.unsubscribe()
+  }
+
+  skip() {
+    this.masterTl.kill()
+    this.boxTl.kill()
+    this.cursor?.kill()
+    setTimeout(() => {
+      this.loading = 'false'
+      window.scrollTo(0, 0)
+      this.activeSlide = round(window.scrollY / window.innerHeight)
+      this.quoteEffect()
+    }, 200)
   }
 
   subBackdrop() {
@@ -259,7 +303,7 @@ export class HomeComponent implements OnInit {
       }
 
       if (section.sectionTitleL) {
-        console.log(section.sectionTitleR)
+        // console.log(section.sectionTitleR)
         this.parallaxMap[`titleL${i}`] = gsap.to(section.sectionTitleL, {
           x: () =>
             -(window.innerWidth * 0.75 - section.sectionTitleL.offsetWidth),
@@ -289,7 +333,7 @@ export class HomeComponent implements OnInit {
         })
       }
     })
-    console.log(this.parallaxMap)
+    // console.log(this.parallaxMap)
   }
 
   textEffect() {
@@ -371,13 +415,13 @@ export class HomeComponent implements OnInit {
           if (word === 'A DEVELOPER.') {
             this.masterTl.kill()
             this.boxTl.kill()
-            this.cursor?.kill()
             setTimeout(() => {
+              this.cursor?.kill()
               this.loading = 'false'
               window.scrollTo(0, 0)
               this.activeSlide = round(window.scrollY / window.innerHeight)
               this.quoteEffect()
-            }, 200)
+            }, 500)
           }
         },
       })
@@ -405,7 +449,7 @@ export class HomeComponent implements OnInit {
         duration: 1.25,
         x: 0,
         y: 0,
-        autoAlpha: 1,
+        autoAlpha: 0.7,
         ease: 'expo',
         overwrite: 'auto',
       }

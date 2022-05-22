@@ -26,6 +26,7 @@
       <div class="wrapper" style="padding-left: 1rem; color: white">
         <div><span class="typing"></span><span class="cursor">_</span></div>
       </div>
+      <div class="skip pointer unselectable" (click)="skip()">skip</div>
     </div>
   </div>
 </div>
@@ -61,7 +62,7 @@
   class="hideScroll">
   <section
     #i
-    *ngFor="let item of [1, 2, 3, 4, 5, 6]; let i = index"
+    *ngFor="let slide of slides; let i = index"
     class="section flex-column justify-content-center">
     <div class="bg"></div>
 
@@ -74,7 +75,7 @@
       <div
         class="sectionText"
         [ngClass]="[i % 2 === 0 ? 'sectionTitleL' : 'sectionTitleR']">
-        title
+        {{ slide.title }}
       </div>
     </div>
     <div
@@ -83,11 +84,7 @@
       [ngClass]="[i % 2 === 0 ? 'textWrapperL' : 'textWrapperR']">
       <div>
         <div class="text">
-          <p class="gs_reveal">
-            Lorem ipsum dolor sit amet, vim in labitur ornatus, pri ponderum
-            oporteat mediocrem ut. Cum id velit iracundia scripserit, eos at
-            vero dolor, vel viris prodesset ut. Ne sed quot habemus, has ei
-            prima eleifend consulatu, no vix summo regione forensibus.
+          <p class="gs_reveal">{{slide.description ||'Lorem ipsum dolor sit amet, vim in labitur ornatus, pri ponderum oporteat mediocrem ut. Cum id velit iracundia scripserit, eos at vero dolor, vel viris prodesset ut. Ne sed quot habemus, has ei prima eleifend consulatu, no vix summo regione forensibus.'}}
           </p>
         </div>
       </div>
@@ -96,11 +93,23 @@
       *ngIf="i === 0"
       class="d-flex justify-content-center self-start w-100 quote-wrapper px-2">
       <div class="quote">
-        <div class="big text-center pb-2 mb-2">IT'S NOT ABOUT IDEAS</div>
+        <div
+          [ngClass]="breakpoints['md-up'] ? 'text-center' : 'text-left'"
+          class="big pb-2 mb-2 text-capitalize">
+          We're no strangers to love
+        </div>
         <div
           *ngIf="breakpoints['md-up']"
           class="custom-border mb-4 w-100"></div>
-        <div class="small text-center">IT'S ABOUT MAKING IDEAS HAPPEN</div>
+        <div
+          [ngClass]="breakpoints['md-up'] ? 'text-center' : 'text-left'"
+          class="small text-capitalize">
+          {{
+            breakpoints['md-up']
+              ? 'You know the rules and so do I'
+              : 'You know the rules\nand so do I'
+          }}
+        </div>
       </div>
     </div>
   </section>
@@ -137,9 +146,8 @@
       ? 'transform-origin: top;   width: 100%;'
       : 'transform-origin: left; max-width: 300px; min-width: 300px;  width: 25%;'
   "
-  class="sidebar justify-content-center d-flex">
-  <div class="h-100">
-    <!--button for hiding search filter bar-->
+  class="sidebar align-items-center justify-content-between d-flex flex-column">
+  <div class="h-75">
     <div class="header">ANTHONY WONG</div>
     <div class="external py-4 flex-column">
       <div
@@ -155,6 +163,7 @@
       </div>
     </div>
   </div>
+  <div>Due performance and capability issues, full page scrolling is disabled in IOS devices (Ipad/Iphone).</div>
 </div>
 <div
   *ngIf="!filterHidden"
