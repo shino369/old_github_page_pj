@@ -62,8 +62,12 @@ import {
   ],
 })
 export class HomeComponent implements OnInit {
+  // platform detect
   OS = window.navigator.platform
+  IOS = ['iPad Simulator', 'iPhone Simulator', 'iPad', 'iPhone']
   disableFullpage: boolean = false
+
+  // state and subscriptions
   loading: string = 'true'
   breakpoints: Breakpoint
   filterHidden: boolean = true
@@ -71,6 +75,29 @@ export class HomeComponent implements OnInit {
   visiblityState$ = new BehaviorSubject<string>('none')
   backdropSub: Subscription
   scrollEvent: Subscription
+
+  // urls
+  externals = [
+    { name: 'GitHub', url: 'https://github.com/shino369' },
+    { name: 'LinkedIn', url: 'https://www.linkedin.com/in/aw3939' },
+    { name: 'Whatsapp', url: 'https://wa.me/85252362806' },
+    { name: 'Email', url: 'mailto:anthonywong3939@gmail.com' },
+  ]
+
+  // slides
+  keyArr: any = []
+  activeSlide: number = 0
+
+  // opening text
+  words = ['HELLO.', "I'M ANTHONY WONG.", 'A DEVELOPER.']
+  cursor: any
+  masterTl: any
+  boxTl: any
+
+  // scroll related
+  yBefore = 0
+  yAfter = 0
+  yCurrent = 0
 
   constructor(
     private breakpointsService: BreakpointsService,
@@ -86,9 +113,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     if (
-      ['iPad Simulator', 'iPhone Simulator', 'iPad', 'iPhone'].includes(
-        navigator.platform
-      ) ||
+      this.IOS.includes(navigator.platform) ||
       (navigator.userAgent.includes('Mac') && 'ontouchend' in document)
     ) {
       this.disableFullpage = true
@@ -100,6 +125,7 @@ export class HomeComponent implements OnInit {
         (breakpoints: Breakpoint) => {
           this.breakpoints = breakpoints
           console.log(this.breakpoints)
+          // this.parallax(true)
         }
       )
 
@@ -117,42 +143,31 @@ export class HomeComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    //Called after every check of the component's view. Applies to components only.
-    //Add 'implements AfterViewChecked' to the class.
     gsap.registerPlugin(ScrollTrigger, TextPlugin)
     if (this.loading === 'true') {
       this.nameEffect()
     }
     this.parallax()
     this.textEffect()
-    //scroll to top
-    this.activeSlide = round(window.scrollY / window.innerHeight)
-    // this.horizontal()
-    // console.log(this.keyArr)
-    setTimeout(() => {
-      this.cursor.pause()
-      this.loading = 'false'
-      window.scrollTo(0, 0)
-      this.quoteEffect()
-    }, 12000)
+
+    // setTimeout(() => {
+    //   this.cursor?.kill()
+    //   this.loading = 'false'
+    //   window.scrollTo(0, 0)
+    //   this.activeSlide = round(window.scrollY / window.innerHeight)
+    //   this.quoteEffect()
+    // }, 12000)
   }
 
   ngAfterViewChecked(): void {
-    //Called after every check of the component's view. Applies to components only.
-    //Add 'implements AfterViewChecked' to the class.
     this.cdref.detectChanges()
   }
 
   ngOnDestroy(): void {
-    //Called once, before the instance is destroyed.
-    //Add 'implements OnDestroy' to the class.
     if (this.backdropSub) this.backdropSub.unsubscribe()
     if (this.breakpointSubscription) this.breakpointSubscription.unsubscribe()
     if (this.scrollEvent) this.scrollEvent.unsubscribe()
   }
-
-  keyArr: any = []
-  activeSlide: number = 0
 
   subBackdrop() {
     this.backdropSub = this.visiblityState$.subscribe(state => {
@@ -165,27 +180,33 @@ export class HomeComponent implements OnInit {
     })
   }
   clickHidden(goback?: boolean) {
-    if (
-      this.visiblityState$.value ===
-      'none' /*|| this.visiblityState$$.value === 'none'*/
-    ) {
+    if (this.visiblityState$.value === 'none') {
       this.visiblityState$.next('expand')
-      // this.visiblityState$$.next('expand')
     } else {
       this.visiblityState$.next('none')
-      // this.visiblityState$$.next('none')
     }
     this.filterHidden = !this.filterHidden
   }
 
-  parallax() {
+  parallaxMap: any = {}
+
+  parallax(reset?: boolean) {
+    this.keyArr = []
+    if (reset) {
+      for (let key in this.parallaxMap) {
+        this.parallaxMap[key].kill()
+      }
+    }
     //Loop over all the sections and set animations
     gsap.utils.toArray('.section').forEach((section: any, i) => {
       // Set the bg variable for the section
+
       this.keyArr.push(section)
       section.bg = section.querySelector('.bg')
       section.textWrapperL = section.querySelector('.textWrapperL')
       section.textWrapperR = section.querySelector('.textWrapperR')
+      section.sectionTitleL = section.querySelector('.sectionTitleL')
+      section.sectionTitleR = section.querySelector('.sectionTitleR')
 
       // Give the backgrounds some random images
       section.bg.style.backgroundImage = `url(https://picsum.photos/${1280}/${720}?random=${i}&blur=${3})`
@@ -194,7 +215,7 @@ export class HomeComponent implements OnInit {
       section.bg.style.backgroundPosition = `50% ${-innerHeight / 2}px`
 
       // Do the parallax effect on each section
-      gsap.to(section.bg, {
+      this.parallaxMap[`bg${i}`] = gsap.to(section.bg, {
         backgroundPosition: `50% ${innerHeight / 2}px`,
         ease: 'none', // Don't apply any easing function.
         scrollTrigger: {
@@ -206,22 +227,21 @@ export class HomeComponent implements OnInit {
       })
 
       if (section.textWrapperL) {
-        gsap.to(section.textWrapperL, {
-          x: window.innerWidth / 2 - section.textWrapperL.offsetWidth / 2,
-          // x: () => window.innerWidth / 2 - section.textWrapperL.offsetWidth / 2,
+        this.parallaxMap[`textL${i}`] = gsap.to(section.textWrapperL, {
+          x: () => window.innerWidth / 2 - section.textWrapperL.offsetWidth / 2,
           duration: 3,
           ease: 'none',
           scrollTrigger: {
             trigger: section.textWrapperL,
             start: 'center bottom',
-            end: 'center center',
+            end: 'center 60%',
             scrub: 1,
           },
         })
       }
 
       if (section.textWrapperR) {
-        gsap.to(section.textWrapperR, {
+        this.parallaxMap[`textR${i}`] = gsap.to(section.textWrapperR, {
           x: () =>
             -(window.innerWidth / 2 - section.textWrapperR.offsetWidth / 2),
           duration: 3,
@@ -232,13 +252,44 @@ export class HomeComponent implements OnInit {
             trigger: section.textWrapperR,
             // Animate on scroll/scrub
             start: 'center bottom',
-            end: 'center center',
+            end: 'center 60%',
+            scrub: 1,
+          },
+        })
+      }
+
+      if (section.sectionTitleL) {
+        console.log(section.sectionTitleR)
+        this.parallaxMap[`titleL${i}`] = gsap.to(section.sectionTitleL, {
+          x: () =>
+            -(window.innerWidth * 0.75 - section.sectionTitleL.offsetWidth),
+          duration: 3,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section.sectionTitleL,
+            start: 'center bottom',
+            end: 'center 60%',
             scrub: 1,
             // markers: true,
           },
         })
       }
+
+      if (section.sectionTitleR) {
+        this.parallaxMap[`titleR${i}`] = gsap.to(section.sectionTitleR, {
+          x: () => window.innerWidth * 0.75 - section.sectionTitleR.offsetWidth,
+          duration: 3,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section.sectionTitleR,
+            start: 'center bottom',
+            end: 'center 60%',
+            scrub: 1,
+          },
+        })
+      }
     })
+    console.log(this.parallaxMap)
   }
 
   textEffect() {
@@ -276,11 +327,9 @@ export class HomeComponent implements OnInit {
       })
   }
 
-  words = ['HELLO.', "I'M ANTHONY WONG.", 'A DEVELOPER.']
-  cursor: any
-  masterTl = gsap.timeline({ repeat: -1 }).pause()
-  boxTl = gsap.timeline()
   nameEffect() {
+    this.masterTl = gsap.timeline({ repeat: -1 }).pause()
+    this.boxTl = gsap.timeline()
     this.cursor = gsap.to('.cursor', {
       opacity: 0,
       ease: 'power2.inOut',
@@ -320,8 +369,15 @@ export class HomeComponent implements OnInit {
         text: word,
         onComplete: () => {
           if (word === 'A DEVELOPER.') {
-            this.masterTl.pause()
-            this.boxTl.pause()
+            this.masterTl.kill()
+            this.boxTl.kill()
+            this.cursor?.kill()
+            setTimeout(() => {
+              this.loading = 'false'
+              window.scrollTo(0, 0)
+              this.activeSlide = round(window.scrollY / window.innerHeight)
+              this.quoteEffect()
+            }, 200)
           }
         },
       })
@@ -379,9 +435,9 @@ export class HomeComponent implements OnInit {
     {}
   )
 
-  yBefore = 0
-  yAfter = 0
-  yCurrent = 0
+  goTo(url: string) {
+    window.open(url, '_blank')
+  }
 
   onTouchStart(event: any) {
     this.yBefore = event.touches[0].clientY

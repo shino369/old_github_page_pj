@@ -62,9 +62,21 @@
   <section
     #i
     *ngFor="let item of [1, 2, 3, 4, 5, 6]; let i = index"
-    class="section"
-    [ngClass]="[i % 2 === 0 ? 'left' : 'right']">
+    class="section flex-column justify-content-center">
     <div class="bg"></div>
+
+    <div
+      *ngIf="i > 0"
+      class="sectionTitle d-flex"
+      [ngClass]="[
+        i % 2 === 0 ? 'justify-content-end' : 'justify-content-start'
+      ]">
+      <div
+        class="sectionText"
+        [ngClass]="[i % 2 === 0 ? 'sectionTitleL' : 'sectionTitleR']">
+        title
+      </div>
+    </div>
     <div
       *ngIf="i > 0"
       class="textWrapper"
@@ -82,7 +94,7 @@
     </div>
     <div
       *ngIf="i === 0"
-      class="d-flex justify-content-center align-items-center w-100 quote-wrapper px-2">
+      class="d-flex justify-content-center self-start w-100 quote-wrapper px-2">
       <div class="quote">
         <div class="big text-center pb-2 mb-2">IT'S NOT ABOUT IDEAS</div>
         <div
@@ -108,16 +120,14 @@
 </div>
 
 <div class="top">
-  <div
-    [ngClass]="[visiblityState$.value === 'expand' ? 'active' : 'inactive']"
+  <app-icon
+    name="menu"
+    width="26"
+    height="26"
+    type="svg"
     class="show-more pointer unselectable backdrop"
-    (click)="clickHidden()">
-    <img
-      [src]="'assets/icons/' + 'menu' + '.svg'"
-      style="mix-blend-mode: difference"
-      [width]="26"
-      [height]="26" />
-  </div>
+    [ngClass]="[visiblityState$.value === 'expand' ? 'active' : 'inactive']"
+    (click)="clickHidden()"></app-icon>
 </div>
 
 <div
@@ -128,11 +138,21 @@
       : 'transform-origin: left; max-width: 300px; min-width: 300px;  width: 25%;'
   "
   class="sidebar justify-content-center d-flex">
-  <div class="sticky-filter row">
-    <div class="select d-flex flex-column w-100">
-      <!--button for hiding search filter bar-->
-      <div class="header">ANTHONY WONG</div>
-      <span>test</span>
+  <div class="h-100">
+    <!--button for hiding search filter bar-->
+    <div class="header">ANTHONY WONG</div>
+    <div class="external py-4 flex-column">
+      <div
+        *ngFor="let external of externals"
+        (click)="goTo(external.url)"
+        class="d-flex align-items-center justify-content-start mb-4">
+        <app-icon
+          [name]="external.name.toLowerCase()"
+          type="png"
+          height="26"
+          width="26"></app-icon>
+        <a class="ms-3 pointer unselectable">{{ external.name }}</a>
+      </div>
     </div>
   </div>
 </div>

@@ -8,11 +8,14 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
 import { LayoutModule } from '@angular/cdk/layout'
 import { MatCommonModule } from '@angular/material/core'
 
+// components
+import { IconComponent } from './components/icon/icon.component'
+
 const COMMON = [CommonModule, FormsModule, ReactiveFormsModule, RouterModule]
 const UIMODULES = [NgbModule, LayoutModule, MatCommonModule]
 
 // remove never later
-const COMPONENTS: never[] = []
+const COMPONENTS = [IconComponent]
 const DIRECTIVES: never[] = []
 const PIPES: never[] = []
 const DECLARE = [...COMPONENTS, ...DIRECTIVES, ...PIPES]
