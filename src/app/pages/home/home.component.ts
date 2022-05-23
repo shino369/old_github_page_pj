@@ -283,7 +283,9 @@ export class HomeComponent implements OnInit {
 
       if (section.textWrapperL) {
         this.parallaxMap[`textL${i}`] = gsap.to(section.textWrapperL, {
-          x: () => window.innerWidth / 2 - section.textWrapperL.offsetWidth / 2,
+          x: () =>
+            //window.innerWidth / 2 - section.textWrapperL.offsetWidth / 2,
+            '2%',
           // alignSelf: 'center',
           duration: 3,
           ease: 'none',
@@ -299,7 +301,8 @@ export class HomeComponent implements OnInit {
       if (section.textWrapperR) {
         this.parallaxMap[`textR${i}`] = gsap.to(section.textWrapperR, {
           x: () =>
-            -(window.innerWidth / 2 - section.textWrapperR.offsetWidth / 2),
+            // -(window.innerWidth / 2 - section.textWrapperR.offsetWidth / 2),
+            '-2%',
           // alignSelf: 'center',
           duration: 3,
           // rotation: 360,
@@ -319,7 +322,8 @@ export class HomeComponent implements OnInit {
         // console.log(section.sectionTitleR)
         this.parallaxMap[`titleL${i}`] = gsap.to(section.sectionTitleL, {
           x: () =>
-            -(window.innerWidth * 0.75 - section.sectionTitleL.offsetWidth),
+            // -(window.innerWidth * 0.75 - section.sectionTitleL.offsetWidth),
+            '-5%',
           duration: 3,
           ease: 'none',
           scrollTrigger: {
@@ -334,7 +338,9 @@ export class HomeComponent implements OnInit {
 
       if (section.sectionTitleR) {
         this.parallaxMap[`titleR${i}`] = gsap.to(section.sectionTitleR, {
-          x: () => window.innerWidth * 0.75 - section.sectionTitleR.offsetWidth,
+          x: () =>
+            //window.innerWidth * 0.75 - section.sectionTitleR.offsetWidth,
+            '5%',
           duration: 3,
           ease: 'none',
           scrollTrigger: {
