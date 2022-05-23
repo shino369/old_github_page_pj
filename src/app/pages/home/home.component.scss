@@ -163,6 +163,21 @@ a {
 .quote-wrapper {
   backdrop-filter: contrast(0.8);
   transform: scaleX(0);
+  position: relative;
+  overflow: hidden;
+  .background{
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('https://c.tenor.com/_4YgA77ExHEAAAAC/rick-roll.gif');
+    background-size: cover;
+    background-position: center;
+    filter: blur(5px);
+    opacity: 0.8;
+  }
 }
 .quote {
   opacity: 0;
