@@ -31,6 +31,7 @@
     "moment": "^2.29.3",
     "ngx-page-scroll-core": "^8.0.0",
     "rxjs": "~6.6.0",
+    "smoothscroll-polyfill": "^0.4.4",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
   },
@@ -46,6 +47,7 @@
     "@types/jasmine": "~3.8.0",
     "@types/lodash": "^4.14.182",
     "@types/node": "^12.11.1",
+    "@types/smoothscroll-polyfill": "^0.3.1",
     "@typescript-eslint/eslint-plugin": "5.17.0",
     "@typescript-eslint/parser": "5.17.0",
     "angular-cli-ghpages": "^1.0.0",

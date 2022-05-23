@@ -12,6 +12,7 @@ import { trigger, state, transition, style, animate } from '@angular/animations'
 import { Subscription, BehaviorSubject, fromEvent } from 'rxjs'
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators'
 import { Title, Meta } from '@angular/platform-browser'
+import * as smoothscroll from 'smoothscroll-polyfill'
 
 import {
   Breakpoint,
@@ -65,6 +66,7 @@ export class HomeComponent implements OnInit {
   // platform detect
   OS = window.navigator.platform
   IOS = ['iPad Simulator', 'iPhone Simulator', 'iPad', 'iPhone']
+  IPHONE = ['iPhone', 'iPhone Simulator']
   disableFullpage: boolean = false
 
   // state and subscriptions
@@ -151,7 +153,7 @@ export class HomeComponent implements OnInit {
       (navigator.userAgent.includes('Mac') && 'ontouchend' in document)
     ) {
       this.disableFullpage = true
-      // console.log('disabled fullpage')
+      console.log('disabled fullpage')
     }
 
     this.breakpointSubscription =
@@ -262,85 +264,87 @@ export class HomeComponent implements OnInit {
         section.bg.style.backgroundImage = `url(https://picsum.photos/${1280}/${720}?random=${i}&blur=${3})`
       }
 
-      // Set the initial position for the background
-      section.bg.style.backgroundPosition = `50% ${-window.innerHeight / 2}px`
-
       // Do the parallax effect on each section
-      this.parallaxMap[`bg${i}`] = gsap.to(section.bg, {
-        backgroundPosition: `50% ${window.innerHeight / 2}px`,
-        ease: 'none', // Don't apply any easing function.
-        scrollTrigger: {
-          // Trigger the animation as soon as the section comes into view
-          trigger: section,
-          // Animate on scroll/scrub
-          scrub: true,
-        },
-      })
+      if (!this.IPHONE.includes(navigator.platform)) {
+        console.log('enabled parallax')
+        // Set the initial position for the background
+        section.bg.style.backgroundPosition = `50% ${-window.innerHeight / 2}px`
+        this.parallaxMap[`bg${i}`] = gsap.to(section.bg, {
+          backgroundPosition: `50% ${window.innerHeight / 2}px`,
+          ease: 'none', // Don't apply any easing function.
+          scrollTrigger: {
+            // Trigger the animation as soon as the section comes into view
+            trigger: section,
+            // Animate on scroll/scrub
+            scrub: true,
+          },
+        })
+      }
 
-      // if (section.textWrapperL) {
-      //   this.parallaxMap[`textL${i}`] = gsap.to(section.textWrapperL, {
-      //     // x: () => window.innerWidth / 2 - section.textWrapperL.offsetWidth / 2,
-      //     alignSelf: 'center',
-      //     duration: 3,
-      //     ease: 'none',
-      //     scrollTrigger: {
-      //       trigger: section.textWrapperL,
-      //       start: 'center bottom',
-      //       end: 'center 60%',
-      //       scrub: 1,
-      //     },
-      //   })
-      // }
+      if (section.textWrapperL) {
+        this.parallaxMap[`textL${i}`] = gsap.to(section.textWrapperL, {
+          x: () => window.innerWidth / 2 - section.textWrapperL.offsetWidth / 2,
+          // alignSelf: 'center',
+          duration: 3,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section.textWrapperL,
+            start: 'center bottom',
+            end: 'center 60%',
+            scrub: 1,
+          },
+        })
+      }
 
-      // if (section.textWrapperR) {
-      //   this.parallaxMap[`textR${i}`] = gsap.to(section.textWrapperR, {
-      //     // x: () =>
-      //     //   -(window.innerWidth / 2 - section.textWrapperR.offsetWidth / 2),
-      //     alignSelf: 'center',
-      //     duration: 3,
-      //     // rotation: 360,
-      //     ease: 'none',
-      //     scrollTrigger: {
-      //       // Trigger the animation as soon as the section comes into view
-      //       trigger: section.textWrapperR,
-      //       // Animate on scroll/scrub
-      //       start: 'center bottom',
-      //       end: 'center 60%',
-      //       scrub: 1,
-      //     },
-      //   })
-      // }
+      if (section.textWrapperR) {
+        this.parallaxMap[`textR${i}`] = gsap.to(section.textWrapperR, {
+          x: () =>
+            -(window.innerWidth / 2 - section.textWrapperR.offsetWidth / 2),
+          // alignSelf: 'center',
+          duration: 3,
+          // rotation: 360,
+          ease: 'none',
+          scrollTrigger: {
+            // Trigger the animation as soon as the section comes into view
+            trigger: section.textWrapperR,
+            // Animate on scroll/scrub
+            start: 'center bottom',
+            end: 'center 60%',
+            scrub: 1,
+          },
+        })
+      }
 
-      // if (section.sectionTitleL) {
-      //   // console.log(section.sectionTitleR)
-      //   this.parallaxMap[`titleL${i}`] = gsap.to(section.sectionTitleL, {
-      //     x: () =>
-      //       -(window.innerWidth * 0.75 - section.sectionTitleL.offsetWidth),
-      //     duration: 3,
-      //     ease: 'none',
-      //     scrollTrigger: {
-      //       trigger: section.sectionTitleL,
-      //       start: 'center bottom',
-      //       end: 'center 60%',
-      //       scrub: 1,
-      //       // markers: true,
-      //     },
-      //   })
-      // }
+      if (section.sectionTitleL) {
+        // console.log(section.sectionTitleR)
+        this.parallaxMap[`titleL${i}`] = gsap.to(section.sectionTitleL, {
+          x: () =>
+            -(window.innerWidth * 0.75 - section.sectionTitleL.offsetWidth),
+          duration: 3,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section.sectionTitleL,
+            start: 'center bottom',
+            end: 'center 60%',
+            scrub: 1,
+            // markers: true,
+          },
+        })
+      }
 
-      // if (section.sectionTitleR) {
-      //   this.parallaxMap[`titleR${i}`] = gsap.to(section.sectionTitleR, {
-      //     x: () => window.innerWidth * 0.75 - section.sectionTitleR.offsetWidth,
-      //     duration: 3,
-      //     ease: 'none',
-      //     scrollTrigger: {
-      //       trigger: section.sectionTitleR,
-      //       start: 'center bottom',
-      //       end: 'center 60%',
-      //       scrub: 1,
-      //     },
-      //   })
-      // }
+      if (section.sectionTitleR) {
+        this.parallaxMap[`titleR${i}`] = gsap.to(section.sectionTitleR, {
+          x: () => window.innerWidth * 0.75 - section.sectionTitleR.offsetWidth,
+          duration: 3,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section.sectionTitleR,
+            start: 'center bottom',
+            end: 'center 60%',
+            scrub: 1,
+          },
+        })
+      }
     })
     // console.log(this.parallaxMap)
   }
@@ -471,6 +475,7 @@ export class HomeComponent implements OnInit {
   }
 
   scroll(el: HTMLElement) {
+    smoothscroll.polyfill()
     el.scrollIntoView({ block: 'start', behavior: 'smooth' })
   }
 

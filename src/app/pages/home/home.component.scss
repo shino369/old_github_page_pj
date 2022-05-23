@@ -124,6 +124,7 @@
 }
 
 .skip {
+  color: rgba(176, 176, 176, 0.5);
   padding: 2rem;
   position: absolute;
   bottom: 0;
@@ -223,10 +224,10 @@ a {
 }
 
 .textWrapperL {
-  // align-self: flex-start;
+  align-self: flex-start;
 }
 .textWrapperR {
-  // align-self: flex-end;
+  align-self: flex-end;
 }
 
 .nav {

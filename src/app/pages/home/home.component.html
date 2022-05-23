@@ -24,8 +24,8 @@
   </div>
 </div>
 <div
-  (touchstart)="disableFullpage ? undefined : onTouchStart($event)"
-  (touchend)="disableFullpage ? undefined : onTouchEnd($event)"
+  (touchstart)="onTouchStart($event)"
+  (touchend)="onTouchEnd($event)"
   (scroll)="
     disableFullpage
       ? loading === 'true'
@@ -44,7 +44,7 @@
       *ngIf="i > 0"
       class="sectionTitle d-flex"
       [ngClass]="[
-        i % 2 === 0 ? 'justify-content-start' : 'justify-content-end'
+        i % 2 === 0 ? 'justify-content-end' : 'justify-content-start'
       ]">
       <div
         class="sectionText"
@@ -170,7 +170,7 @@
       </div>
     </div>
   </div>
-  <div class="pb-4">Due performance and capability issues, full page scrolling is disabled on portable devices (tablet/phone).</div>
+  <div class="pb-4">Due performance and capability issues, some effect (parallax / animation /full page scrolling) is partly disabled on portable devices especially iphone.</div>
 </div>
 <div
   *ngIf="!filterHidden"
